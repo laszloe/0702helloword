@@ -1,0 +1,83 @@
+create table CUSTOMERS (
+    ID                            NUMBER not null primary key,
+    NAME                          VARCHAR2(255),
+    EMAIL                         VARCHAR2(255),
+    PHONE1                        VARCHAR2(30),
+    PHONE2                        VARCHAR2(30)
+)
+;
+
+create table PRODUCTS (
+    ID                            NUMBER not null primary key,
+    SKU                           VARCHAR2(4000),
+    NAME                          VARCHAR2(255),
+    MSRP                          VARCHAR2(4000)
+)
+;
+
+create table ORDERS (
+    ID                            NUMBER not null primary key,
+    ORDER_NUMBER                  VARCHAR2(30),
+    CUSTOMER_ID                   NUMBER references CUSTOMERS,
+    ORDER_DATE                    TIMESTAMP WITH LOCAL TIME ZONE
+)
+;
+
+create table ORDER_LINES (
+    ID                            NUMBER not null primary key,
+    ORDER_ID                      NUMBER references ORDERS,
+    PRODUCT_ID                    NUMBER references PRODUCTS,
+    QTY                           VARCHAR2(4000),
+    PRICE                         VARCHAR2(4000)
+)
+;
+
+create or replace trigger CUSTOMERS_BIU
+    before insert or update 
+    on CUSTOMERS
+    for each row
+begin
+    if :new.id is null then
+        :new.id := to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+    end if;
+end;
+/
+
+create or replace trigger PRODUCTS_BIU
+    before insert or update 
+    on PRODUCTS
+    for each row
+begin
+    if :new.id is null then
+        :new.id := to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+    end if;
+end;
+/
+
+create or replace trigger ORDERS_BIU
+    before insert or update 
+    on ORDERS
+    for each row
+begin
+    if :new.id is null then
+        :new.id := to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+    end if;
+end;
+/
+
+create or replace trigger ORDER_LINES_BIU
+    before insert or update 
+    on ORDER_LINES
+    for each row
+begin
+    if :new.id is null then
+        :new.id := to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+    end if;
+end;
+/
+
+create index ORDERS_i1 on ORDERS (CUSTOMER_ID);
+
+create index ORDER_LINES_i1 on ORDER_LINES (ORDER_ID);
+
+create index ORDER_LINES_i2 on ORDER_LINES (PRODUCT_ID);
