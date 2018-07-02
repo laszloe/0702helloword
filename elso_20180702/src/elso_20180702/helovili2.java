@@ -12,13 +12,14 @@ public class helovili2 {
 	
 	szam2++;
 	szam2+=15;
-	System.out.println(szam2);
-	System.out.println(szam2);
+	// System.out.println(szam2);
+	//System.out.println(szam2);
 	
 	System.out.println(szam1<szam2);
 	/*
-	 * Hûdetuti és akkkor msot 
+	 * Hûdetuti és akkkor most 
 	 */
+	System.out.println("Ez itt az új PROJEKT");
 	
 	}
 
